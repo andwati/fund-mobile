@@ -12,6 +12,11 @@ export function setAuthToken(next: string | null) {
   token = next;
 }
 
+/** The current bearer token, for requests that bypass the typed client (file downloads). */
+export function getAuthToken(): string | null {
+  return token;
+}
+
 /** Called when an authenticated request comes back 401 (expired or revoked session). */
 export function setUnauthorizedHandler(handler: (() => void) | null) {
   onUnauthorized = handler;

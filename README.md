@@ -1,56 +1,43 @@
-# Welcome to your Expo app 👋
+# Fund (mobile + web)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Savings planner for iOS, Android and the web, built with Expo (SDK 58), Expo Router and Uniwind (Tailwind).
+It talks to the Go API in `../fund-backend`.
 
-## Get started
+## Run
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```sh
+pnpm install
+cp .env.example .env        # EXPO_PUBLIC_API_URL, default http://localhost:4000
+npx expo run:android        # first time (and after adding native modules): builds the dev client
+npx expo start --dev-client # then open the dev client
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+Android emulator: `adb reverse tcp:4000 tcp:4000` (API) and `adb reverse tcp:8081 tcp:8081` (Metro), so `localhost` works.
 
-### Other setup steps
+Local backend (from `../fund-backend`): see its README. With no `RESEND_API_KEY` the backend logs emails, so the
+verification and invite links can be copied from its log and opened as deep links
+(`adb shell am start -a android.intent.action.VIEW -d "fundmobile:/verify-email?token=..."`).
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+## Checks (what CI runs)
 
-## Learn more
+```sh
+pnpm exec expo lint
+pnpm typecheck      # starts the dev server briefly to emit typed routes, then tsc
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+## Layout
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- `src/app` routes: `(auth)` sign-in/up and password reset, `(app)` the signed-in app (tabs: Overview, Items,
+  Money, Schedule, Settings; sheets for items, contributions, paydays, sharing, account), public `verify-email`,
+  `reset-password` and `invite/[token]` for email links.
+- `src/api` typed client generated from the backend's OpenAPI spec: `pnpm gen:api` (needs `../fund-backend`).
+- `src/fund` fund state, the offline queue (deposits made without a connection sync later), onboarding.
+- `src/lib/plan.ts`, `plan-reminders.ts`, `status.ts` are **verbatim copies** of the web app's planning code
+  (the backend is tested against that exact code). Do not edit them here.
+- `src/components/ui` the UI kit on the Uniwind tokens in `src/global.css`.
 
-## Join the community
+## Gotchas
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Do not add dev tools (e.g. `openapi-typescript`) as dependencies: one pulled `supports-color@10`, pnpm then resolved a
+  second copy of `react-native`, and the app crashed at startup ("property is not writable"). Run them with `pnpm dlx`.
+- `expo-secure-store` has no web implementation; `src/lib/storage.ts` falls back to `localStorage` on the web.
