@@ -24,9 +24,11 @@ export type ButtonProps = Omit<AppPressableProps, 'children'> & {
   loading?: boolean;
   /** Stretch to the full width of the parent (forms) instead of hugging the label. */
   block?: boolean;
+  /** Centre the button in its row (a lone text-style button under a form). */
+  center?: boolean;
 };
 
-export function Button({ title, variant = 'primary', loading, block, disabled, className, haptic, ...rest }: ButtonProps) {
+export function Button({ title, variant = 'primary', loading, block, center, disabled, className, haptic, ...rest }: ButtonProps) {
   const spinner = useCSSVariable(variant === 'secondary' ? '--color-foreground' : '--color-accent-foreground') as string;
   const off = disabled || loading;
   return (
@@ -35,7 +37,7 @@ export function Button({ title, variant = 'primary', loading, block, disabled, c
       accessibilityState={{ disabled: !!off, busy: !!loading }}
       disabled={off}
       haptic={haptic ?? variant === 'primary'}
-      className={`min-h-12 items-center justify-center rounded-control ${variant === 'ghost' ? 'px-2' : 'px-5'} ${BOX[variant]} ${block ? 'self-stretch' : 'self-start'} ${off ? 'opacity-50' : ''} ${className ?? ''}`}
+      className={`min-h-12 items-center justify-center rounded-control ${variant === 'ghost' ? 'px-2' : 'px-5'} ${BOX[variant]} ${block ? 'self-stretch' : center ? 'self-center' : 'self-start'} ${off ? 'opacity-50' : ''} ${className ?? ''}`}
       {...rest}>
       <View className="flex-row items-center gap-2">
         {loading ? <ActivityIndicator color={variant === 'ghost' ? undefined : spinner} /> : null}

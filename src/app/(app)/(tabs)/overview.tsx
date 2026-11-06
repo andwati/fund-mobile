@@ -5,6 +5,7 @@ import { View } from 'react-native';
 import { PlanChart } from '@/components/plan-chart';
 import { ItemRow } from '@/components/item-row';
 import { StatusChip } from '@/components/status-chip';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Notice } from '@/components/ui/notice';
 import { Pressable } from '@/components/ui/pressable';
@@ -18,7 +19,7 @@ import { daysBetween, deadlineRisks, type FundProgress, scheduleOf } from '@/lib
 import { catchUp, standing } from '@/lib/status';
 
 export default function Overview() {
-  const { payload, progress, currency, refresh, refreshing } = useFund();
+  const { payload, progress, currency, canEdit, refresh, refreshing } = useFund();
   const hasItems = progress.items.length > 0;
 
   const risks = useMemo(() => {
@@ -41,6 +42,7 @@ export default function Overview() {
       <FundHeader />
       {hasItems ? (
         <>
+          {canEdit ? <Button title="Log money" block onPress={() => router.push('/contribution/new')} /> : null}
           <Hero progress={progress} currency={currency} />
           <CatchUpNote progress={progress} currency={currency} />
           <DeadlineRiskNote risks={risks} pace={payload.fund.pace} currency={currency} />
@@ -66,6 +68,7 @@ export default function Overview() {
         <Card>
           <AppText variant="headline">Welcome. Start with your first item</AppText>
           <AppText tone="muted">Add what you are saving for and when you need it. Fund spreads the cost over your paydays.</AppText>
+          {canEdit ? <Button title="Add item" onPress={() => router.push('/item/new')} /> : null}
         </Card>
       )}
     </Screen>

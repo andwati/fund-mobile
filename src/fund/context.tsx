@@ -10,6 +10,7 @@ import { Notice } from '@/components/ui/notice';
 import { Screen } from '@/components/ui/screen';
 import { compute, type FundProgress, scheduleOf } from '@/lib/plan';
 import { queryClient } from '@/lib/query';
+import { useOutbox, withPending } from './outbox';
 import * as storage from '@/lib/storage';
 
 const LAST_FUND_KEY = 'fund.last';
@@ -95,7 +96,9 @@ export function FundProvider({ children }: { children: ReactNode }) {
     queryClient.setQueryData(['funds'], payload.funds);
   }, []);
 
-  const payload = detail.data;
+  // What the screens show: the server's fund plus deposits still waiting to sync.
+  const { entries: queued } = useOutbox();
+  const payload = useMemo(() => (detail.data ? withPending(detail.data, queued) : undefined), [detail.data, queued]);
   const progress = useMemo(() => (payload ? planFor(payload) : null), [payload]);
 
   const refresh = useCallback(async () => {

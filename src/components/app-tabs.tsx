@@ -15,6 +15,16 @@ export default function AppTabs() {
         <NativeTabs.Trigger.Icon sf="chart.pie.fill" md="pie_chart" />
       </NativeTabs.Trigger>
 
+      <NativeTabs.Trigger name="items">
+        <NativeTabs.Trigger.Label>Items</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf="list.bullet" md="format_list_bulleted" />
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="contributions">
+        <NativeTabs.Trigger.Label>Money</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf="banknote.fill" md="payments" />
+      </NativeTabs.Trigger>
+
       <NativeTabs.Trigger name="settings">
         <NativeTabs.Trigger.Label>Settings</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon sf="gearshape.fill" md="settings" />

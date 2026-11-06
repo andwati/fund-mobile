@@ -4,6 +4,9 @@ import { VerifyEmailGate } from '@/components/verify-email-gate';
 import { useSession } from '@/auth/session';
 import { FundProvider, useFund } from '@/fund/context';
 import { OnboardingWizard } from '@/fund/onboarding';
+import { OutboxProvider } from '@/fund/outbox';
+
+const SHEET = { presentation: 'formSheet' as const, sheetAllowedDetents: [0.95], sheetGrabberVisible: true, sheetCornerRadius: 20 };
 
 function Gate() {
   const { payload } = useFund();
@@ -12,10 +15,11 @@ function Gate() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
-      <Stack.Screen
-        name="switch-fund"
-        options={{ presentation: 'formSheet', sheetAllowedDetents: [0.5, 0.9], sheetGrabberVisible: true, sheetCornerRadius: 20 }}
-      />
+      <Stack.Screen name="switch-fund" options={{ ...SHEET, sheetAllowedDetents: [0.5, 0.95] }} />
+      <Stack.Screen name="item/new" options={SHEET} />
+      <Stack.Screen name="item/[id]" options={SHEET} />
+      <Stack.Screen name="contribution/new" options={SHEET} />
+      <Stack.Screen name="contribution/[id]" options={SHEET} />
     </Stack>
   );
 }
@@ -25,8 +29,10 @@ export default function AppLayout() {
   // Fund actions need a verified address (the API answers 403 otherwise).
   if (!user?.emailVerified) return <VerifyEmailGate />;
   return (
-    <FundProvider>
-      <Gate />
-    </FundProvider>
+    <OutboxProvider>
+      <FundProvider>
+        <Gate />
+      </FundProvider>
+    </OutboxProvider>
   );
 }
