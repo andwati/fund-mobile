@@ -152,10 +152,12 @@ function DeadlineRiskNote({ risks, pace, currency }: { risks: ReturnType<typeof 
   const first = risks[0];
   const head =
     risks.length === 1 ? `${first?.name} misses its deadline` : `${risks.length} items miss their deadlines`;
+  // The plan's search gives up past a billion: no pace helps (e.g. a payday pinned to a fixed amount).
+  const hopeless = needed > 1_000_000_000;
   const detail = risks.map((r) => `${r.name}: ${lateBy(r.daysLate)} late, finishing ${fmtDate(r.finish)} against ${fmtDate(r.deadline)}.`).join('\n');
   return (
     <Notice kind="warning" title={`At ${money(currency, pace)} per payday, ${head}`}>
-      {`Raise pace to ${money(currency, needed)} to make ${risks.length === 1 ? 'it' : 'all of them'}.\n${detail}`}
+      {`${hopeless ? 'No pace is enough: a payday with a fixed amount, or the deadline, is the limit. Adjust either one.' : `Raise pace to ${money(currency, needed)} to make ${risks.length === 1 ? 'it' : 'all of them'}.`}\n${detail}`}
     </Notice>
   );
 }

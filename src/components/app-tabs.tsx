@@ -25,6 +25,11 @@ export default function AppTabs() {
         <NativeTabs.Trigger.Icon sf="banknote.fill" md="payments" />
       </NativeTabs.Trigger>
 
+      <NativeTabs.Trigger name="schedule">
+        <NativeTabs.Trigger.Label>Schedule</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf="calendar" md="calendar_month" />
+      </NativeTabs.Trigger>
+
       <NativeTabs.Trigger name="settings">
         <NativeTabs.Trigger.Label>Settings</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon sf="gearshape.fill" md="settings" />

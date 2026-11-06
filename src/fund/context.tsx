@@ -13,7 +13,7 @@ import { queryClient } from '@/lib/query';
 import { useOutbox, withPending } from './outbox';
 import * as storage from '@/lib/storage';
 
-const LAST_FUND_KEY = 'fund.last';
+export const LAST_FUND_KEY = 'fund.last';
 
 /** Archived items are out of the plan, and so is the money allocated to them. */
 export function planFor(payload: FundPayload, now = new Date()): FundProgress {
@@ -57,6 +57,12 @@ export function useFund(): FundContextValue {
 }
 
 export const fundKey = (id: string) => ['fund', id] as const;
+
+/** Drop a fund that was deleted or left, and refetch the list (which may now create a fresh default fund). */
+export async function forgetFund(id: string) {
+  queryClient.removeQueries({ queryKey: fundKey(id) });
+  await queryClient.invalidateQueries({ queryKey: ['funds'] });
+}
 
 /** Loads the fund list, picks the last-used fund and keeps its payload fresh. */
 export function FundProvider({ children }: { children: ReactNode }) {

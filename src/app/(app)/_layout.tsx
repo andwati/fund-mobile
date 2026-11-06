@@ -20,6 +20,10 @@ function Gate() {
       <Stack.Screen name="item/[id]" options={SHEET} />
       <Stack.Screen name="contribution/new" options={SHEET} />
       <Stack.Screen name="contribution/[id]" options={SHEET} />
+      <Stack.Screen name="payday/[date]" options={SHEET} />
+      <Stack.Screen name="fund-settings" options={SHEET} />
+      <Stack.Screen name="sharing" options={SHEET} />
+      <Stack.Screen name="account" options={SHEET} />
     </Stack>
   );
 }

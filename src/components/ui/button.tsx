@@ -9,6 +9,7 @@ const BOX = {
   secondary: 'border border-border bg-surface',
   ghost: '',
   destructive: 'bg-destructive',
+  dangerGhost: '',
 } as const;
 
 const TONE = {
@@ -16,6 +17,7 @@ const TONE = {
   secondary: 'default',
   ghost: 'accent',
   destructive: 'onAccent',
+  dangerGhost: 'destructive',
 } as const;
 
 export type ButtonProps = Omit<AppPressableProps, 'children'> & {
@@ -37,10 +39,10 @@ export function Button({ title, variant = 'primary', loading, block, center, dis
       accessibilityState={{ disabled: !!off, busy: !!loading }}
       disabled={off}
       haptic={haptic ?? variant === 'primary'}
-      className={`min-h-12 items-center justify-center rounded-control ${variant === 'ghost' ? 'px-2' : 'px-5'} ${BOX[variant]} ${block ? 'self-stretch' : center ? 'self-center' : 'self-start'} ${off ? 'opacity-50' : ''} ${className ?? ''}`}
+      className={`min-h-12 items-center justify-center rounded-control ${variant === 'ghost' || variant === 'dangerGhost' ? 'px-2' : 'px-5'} ${BOX[variant]} ${block ? 'self-stretch' : center ? 'self-center' : 'self-start'} ${off ? 'opacity-50' : ''} ${className ?? ''}`}
       {...rest}>
       <View className="flex-row items-center gap-2">
-        {loading ? <ActivityIndicator color={variant === 'ghost' ? undefined : spinner} /> : null}
+        {loading ? <ActivityIndicator color={variant === 'ghost' || variant === 'dangerGhost' ? undefined : spinner} /> : null}
         <AppText variant="body" tone={TONE[variant]} className="font-semibold">
           {title}
         </AppText>
