@@ -23,9 +23,11 @@ export const TextField = forwardRef<TextInputRef, TextFieldProps>(function TextF
   const secure = !!secureTextEntry;
   return (
     <View className="gap-1.5">
-      <AppText variant="caption" tone="muted" className="font-medium">
-        {label}
-      </AppText>
+      {label ? (
+        <AppText variant="caption" tone="muted" className="font-medium">
+          {label}
+        </AppText>
+      ) : null}
       <View
         className={`min-h-12 flex-row items-center rounded-control border bg-surface px-4 ${error ? 'border-destructive' : 'border-border'}`}>
         <TextInput
