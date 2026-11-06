@@ -35,7 +35,7 @@ export function Button({ title, variant = 'primary', loading, block, disabled, c
       accessibilityState={{ disabled: !!off, busy: !!loading }}
       disabled={off}
       haptic={haptic ?? variant === 'primary'}
-      className={`min-h-12 items-center justify-center rounded-control px-5 ${BOX[variant]} ${block ? 'self-stretch' : 'self-start'} ${off ? 'opacity-50' : ''} ${className ?? ''}`}
+      className={`min-h-12 items-center justify-center rounded-control ${variant === 'ghost' ? 'px-2' : 'px-5'} ${BOX[variant]} ${block ? 'self-stretch' : 'self-start'} ${off ? 'opacity-50' : ''} ${className ?? ''}`}
       {...rest}>
       <View className="flex-row items-center gap-2">
         {loading ? <ActivityIndicator color={variant === 'ghost' ? undefined : spinner} /> : null}
