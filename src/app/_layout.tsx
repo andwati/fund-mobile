@@ -34,6 +34,7 @@ function Navigator() {
       {/* Reachable from email links whether or not someone is signed in. */}
       <Stack.Screen name="verify-email" />
       <Stack.Screen name="reset-password" />
+      <Stack.Screen name="invite/[token]" />
     </Stack>
   );
 }
