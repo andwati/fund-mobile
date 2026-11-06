@@ -9,24 +9,15 @@ export default function AppTabs() {
   ]) as [string, string, string];
 
   return (
-    <NativeTabs
-      backgroundColor={background}
-      indicatorColor={surface}
-      labelStyle={{ selected: { color: foreground } }}>
-      <NativeTabs.Trigger name="index">
-        <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon
-          src={require('@/assets/images/tabIcons/home.png')}
-          renderingMode="template"
-        />
+    <NativeTabs backgroundColor={background} indicatorColor={surface} labelStyle={{ selected: { color: foreground } }}>
+      <NativeTabs.Trigger name="overview">
+        <NativeTabs.Trigger.Label>Overview</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf="chart.pie.fill" md="pie_chart" />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="settings">
         <NativeTabs.Trigger.Label>Settings</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon
-          src={require('@/assets/images/tabIcons/explore.png')}
-          renderingMode="template"
-        />
+        <NativeTabs.Trigger.Icon sf="gearshape.fill" md="settings" />
       </NativeTabs.Trigger>
     </NativeTabs>
   );

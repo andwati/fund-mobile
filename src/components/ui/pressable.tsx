@@ -47,7 +47,8 @@ export function Pressable({ className, haptic, onPress, onPressIn, onPressOut, .
         transitionDuration: 120,
         transitionTimingFunction: EASE_OUT,
         transform: [{ scale: pressed && !reduced ? 0.97 : 1 }],
-        opacity: pressed && reduced ? 0.7 : 1,
+        // Only set opacity when needed: even `opacity: undefined` would override className (opacity-50 when disabled).
+        ...(pressed && reduced ? { opacity: 0.7 } : null),
       }}
     />
   );
