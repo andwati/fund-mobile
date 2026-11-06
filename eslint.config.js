@@ -5,6 +5,7 @@ const expoConfig = require('eslint-config-expo/flat');
 module.exports = defineConfig([
   expoConfig,
   {
-    ignores: ['dist/*'],
+    // Verbatim copies from the web app; kept identical on purpose.
+    ignores: ['dist/*', 'src/lib/plan.ts', 'src/lib/plan-reminders.ts', 'src/lib/status.ts', 'src/api/schema.d.ts'],
   },
 ]);
